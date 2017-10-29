@@ -1,7 +1,5 @@
 package com.ifood.antonio.advancedtest.weather;
 
-import java.util.Optional;
-
 /**
  * Retrieve weather information for locations.
  * 
@@ -16,5 +14,5 @@ public interface WeatherRetriever {
 	 *            the name of the city. Not null
 	 * @return the current temperature in celsius
 	 */
-	Optional<Double> retrieveCurrentTemperatureByCityName(String cityName);
+	double retrieveCurrentTemperatureByCityName(String cityName);
 }

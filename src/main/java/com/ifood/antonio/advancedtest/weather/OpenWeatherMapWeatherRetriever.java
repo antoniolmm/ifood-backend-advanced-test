@@ -2,19 +2,19 @@ package com.ifood.antonio.advancedtest.weather;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
-import java.util.Optional;
-
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableMap;
+import com.ifood.antonio.advancedtest.suggestion.CityNotFoundException;
 
 /**
  * WeatherRetriever that search weather information on OpenWeatherMap.
@@ -23,8 +23,11 @@ import com.google.common.collect.ImmutableMap;
  * 
  * @author antoniomoreira
  */
-@Component("open.weather.map.weather.retriever")
+@Service("open.weather.map.weather.retriever")
 final class OpenWeatherMapWeatherRetriever implements WeatherRetriever {
+
+	@VisibleForTesting
+	static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather";
 
 	@Resource
 	private RestTemplate restTemplate;
@@ -32,19 +35,16 @@ final class OpenWeatherMapWeatherRetriever implements WeatherRetriever {
 	private String apiKey;
 
 	@Override
-	public Optional<Double> retrieveCurrentTemperatureByCityName(final String cityName) {
+	public double retrieveCurrentTemperatureByCityName(final String cityName) {
 		checkArgument(!Strings.isNullOrEmpty(cityName));
 		try {
 			final ResponseEntity<OpenWeatherMapResponse> weatherDataResponse = restTemplate.getForEntity(
-					"http://api.openweathermap.org/data/2.5/weather?units=metric&q={cityName}&APPID={apiKey}",
+					WEATHER_URL + "?units=metric&q={cityName}&APPID={apiKey}",
 					OpenWeatherMapResponse.class,
 					ImmutableMap.of(
 							"cityName", cityName,
 							"apiKey", apiKey));
-			if (weatherDataResponse.getStatusCode() != HttpStatus.OK) {
-				return Optional.empty();
-			}
-			return Optional.of(weatherDataResponse.getBody().getMain().getTemp());
+			return weatherDataResponse.getBody().getMain().getTemp();
 		} catch (final HttpClientErrorException e) {
 			throw handleClientException(e, cityName);
 		}

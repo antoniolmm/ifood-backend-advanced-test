@@ -1,4 +1,4 @@
-package com.ifood.antonio.advancedtest.weather;
+package com.ifood.antonio.advancedtest.suggestion;
 
 public class CityNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
@@ -12,10 +12,5 @@ public class CityNotFoundException extends RuntimeException {
 
 	public String getCityName() {
 		return cityName;
-	}
-
-	@Override
-	public String getMessage() {
-		return "city.not.found";
 	}
 }

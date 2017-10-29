@@ -1,6 +1,7 @@
 package com.ifood.antonio.advancedtest.weather;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
 
 /**
  * Simple response POJO for OpenWeatherMap.<br>
@@ -24,11 +25,25 @@ final class OpenWeatherMapResponse {
 		return main;
 	}
 
+	@Override
+	public String toString() {
+		return MoreObjects.toStringHelper(this)
+				.add("main", main)
+				.toString();
+	}
+
 	final static class MainInformations {
 		private double temp;
 
 		public double getTemp() {
 			return temp;
+		}
+
+		@Override
+		public String toString() {
+			return MoreObjects.toStringHelper(this)
+					.add("temp", temp)
+					.toString();
 		}
 	}
 }

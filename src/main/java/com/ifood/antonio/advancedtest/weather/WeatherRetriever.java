@@ -16,5 +16,5 @@ public interface WeatherRetriever {
 	 *            the name of the city. Not null
 	 * @return the current temperature in celsius
 	 */
-	Optional<Double> retrieveTemperatureByCityName(String cityName);
+	Optional<Double> retrieveCurrentTemperatureByCityName(String cityName);
 }

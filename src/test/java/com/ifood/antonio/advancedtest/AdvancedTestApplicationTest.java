@@ -18,6 +18,6 @@ public class AdvancedTestApplicationTest {
 
 	@Test
 	public void contextLoads() {
-		weatherRetriver.retrieveTemperatureByCityName("a");
+		weatherRetriver.retrieveCurrentTemperatureByCityName("a");
 	}
 }

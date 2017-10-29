@@ -14,6 +14,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * WeatherRetriever that search weather information on OpenWeatherMap.
@@ -31,12 +32,15 @@ final class OpenWeatherMapWeatherRetriever implements WeatherRetriever {
 	private String apiKey;
 
 	@Override
-	public Optional<Double> retrieveTemperatureByCityName(final String cityName) {
+	public Optional<Double> retrieveCurrentTemperatureByCityName(final String cityName) {
 		checkArgument(!Strings.isNullOrEmpty(cityName));
 		try {
 			final ResponseEntity<OpenWeatherMapResponse> weatherDataResponse = restTemplate.getForEntity(
-					"http://api.openweathermap.org/data/2.5/weather?units=metric&q=" + cityName + "&APPID=" + apiKey,
-					OpenWeatherMapResponse.class);
+					"http://api.openweathermap.org/data/2.5/weather?units=metric&q={cityName}&APPID={apiKey}",
+					OpenWeatherMapResponse.class,
+					ImmutableMap.of(
+							"cityName", cityName,
+							"apiKey", apiKey));
 			if (weatherDataResponse.getStatusCode() != HttpStatus.OK) {
 				return Optional.empty();
 			}

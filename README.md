@@ -30,7 +30,7 @@ Fork this repository and submit your code.
 The solution was made in Java 8 with the Eclipse IDE.
 Almost all the frameworks were provided by spring, being the most important Spring-Boot and Spring Web MVC.
 Maven was used as dependency management and build tool.
-As suggested, the weather information is provided by Open Weather Map and music suggestions is provided by Spotify.
+As suggested, the weather information is provided by Open Weather Map and music suggestions are provided by Spotify.
 
 ## Architectural details
 
@@ -41,14 +41,14 @@ The micro-service was elaborated in 3 layers:
 
 ## Instructions
 
-In order to get the service runing, use the spring-boot maven plugin: just type `mvn spring-boot:run`. The server with be up on port 8080.
+In order to get the service runing, use the spring-boot maven plugin: just type `mvn spring-boot:run` in the terminal on the project's root directory. The server will be up on port 8080.
 
 Two services are going to be exposed:
 * Search for city name;
   * Sample request  `http://localhost:8080/suggestion/city-name/sydney`.
-  * If a city cannot be found, a `BAD REQUEST` (400) with be returned with an error message.
+  * If a city cannot be found, a `BAD REQUEST` (400) will be returned with an error message.
 * Search for geographic coordinates.
   * Sample request  `http://localhost:8080/suggestion/lat/-26.6/lon/-27`.
-  * If the coordinates values are invalid (higher than 180 or below -180), a `BAD REQUEST` (400) with be retuning with an error message containing the invalid value.
+  * If the coordinates values are invalid (higher than 180 or below -180), a `BAD REQUEST` (400) will be retuning with an error message containing the invalid value.
 
 Both services return the temperature of the found location, the music style associated and a list of track names.

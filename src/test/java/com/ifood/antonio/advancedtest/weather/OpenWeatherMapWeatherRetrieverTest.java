@@ -72,4 +72,35 @@ public class OpenWeatherMapWeatherRetrieverTest {
 	public void shouldThrowExceptionWhenNullCityName() {
 		subject.retrieveCurrentTemperatureByCityName(null);
 	}
+
+	@Test
+	public void shouldFindTemperatureByCoordinates() {
+		when(restTemplate.getForEntity(
+				contains(OpenWeatherMapWeatherRetriever.WEATHER_URL),
+				any(),
+				anyMapOf(String.class, Object.class)))
+						.thenReturn(ResponseEntity.ok(OpenWeatherMapResponse.withTemperature(25d)));
+		final Double weatherResponse = subject.retrieveCurrentTemperatureByCoordinates(10, 50);
+		assertThat(weatherResponse).isEqualTo(25d);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionWhenLatitudeIsHigherThan180() {
+		subject.retrieveCurrentTemperatureByCoordinates(180.1, 0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionWhenLatitudeIsBelowThanMinus180() {
+		subject.retrieveCurrentTemperatureByCoordinates(-180.1, 0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionWhenLongitudeIsHigherThan180() {
+		subject.retrieveCurrentTemperatureByCoordinates(0, 180.1);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldThrowExceptionWhenLongitudeIsBelowThanMinus80() {
+		subject.retrieveCurrentTemperatureByCoordinates(0, -180.1);
+	}
 }

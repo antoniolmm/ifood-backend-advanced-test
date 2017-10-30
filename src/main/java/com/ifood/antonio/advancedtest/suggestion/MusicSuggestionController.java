@@ -39,10 +39,37 @@ final class MusicSuggestionController {
 		this.musicSuggestionService = musicSuggestionService;
 	}
 
-	@RequestMapping(path = "city_name/{cityName}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	/**
+	 * Suggest music finding the city by its name.
+	 * 
+	 * @param cityName
+	 *            the city name
+	 * @return a list of track names
+	 */
+	@RequestMapping(path = "city-name/{cityName}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
 	ResponseEntity<MusicSuggestionResponse> suggestMusicsByCityName(
 			@PathVariable(name = "cityName")
 			final String cityName) {
 		return ResponseEntity.ok(musicSuggestionService.suggestMusicsByCityName(cityName));
+	}
+
+	/**
+	 * Suggest music finding the city by its geographic coordinates.<br>
+	 * Return an BAD_REQUEST if the coordinates values are invalid: below -180
+	 * or higher than 180.
+	 * 
+	 * @param latitude
+	 *            the city latitude
+	 * @param longitude
+	 *            the city longitude
+	 * @return a list of track names
+	 */
+	@RequestMapping(path = "lat/{latitude}/lon/{longitude}", produces = MediaType.APPLICATION_JSON_VALUE, method = RequestMethod.GET)
+	ResponseEntity<MusicSuggestionResponse> suggestMusicsByCoordinate(
+			@PathVariable(name = "latitude")
+			final double latitude,
+			@PathVariable(name = "longitude")
+			final double longitude) {
+		return ResponseEntity.ok(musicSuggestionService.suggestMusicsByCoordinates(latitude, longitude));
 	}
 }

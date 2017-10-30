@@ -28,10 +28,27 @@ final class MusicSuggestionService {
 	}
 
 	MusicSuggestionResponse suggestMusicsByCityName(final String cityName) {
-		final double currentTemperature = weatherRetriever.retrieveCurrentTemperatureByCityName(cityName);
+		return suggestMusicByTemperature(weatherRetriever.retrieveCurrentTemperatureByCityName(cityName));
+	}
+
+	MusicSuggestionResponse suggestMusicsByCoordinates(final double latitude, final double longitude) {
+		validateCoordinates(latitude, longitude);
+		return suggestMusicByTemperature(weatherRetriever.retrieveCurrentTemperatureByCoordinates(latitude, longitude));
+	}
+
+	private MusicSuggestionResponse suggestMusicByTemperature(final double currentTemperature) {
 		final MusicStyle appropriatedMusicStyle = rangeSorter.getRangeByTemperature(currentTemperature).getMusicStyle();
 		final List<MusicTrack> musicTracks = musicSuggestionRetriever
 				.suggestTracksByMusicStyle(appropriatedMusicStyle);
 		return new MusicSuggestionResponse(currentTemperature, appropriatedMusicStyle, musicTracks);
+	}
+
+	private static void validateCoordinates(final double latitude, final double longitude) {
+		if (latitude > 180 || latitude < -180) {
+			throw new InvalidCoordinatesException(latitude);
+		}
+		if (longitude > 180 || longitude < -180) {
+			throw new InvalidCoordinatesException(longitude);
+		}
 	}
 }

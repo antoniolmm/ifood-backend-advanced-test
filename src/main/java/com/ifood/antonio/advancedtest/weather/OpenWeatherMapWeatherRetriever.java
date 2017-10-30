@@ -46,14 +46,33 @@ final class OpenWeatherMapWeatherRetriever implements WeatherRetriever {
 							"apiKey", apiKey));
 			return weatherDataResponse.getBody().getMain().getTemp();
 		} catch (final HttpClientErrorException e) {
-			throw handleClientException(e, cityName);
+			throw handleClientExceptionForCityNotFound(e, cityName);
 		}
 	}
 
-	private static RuntimeException handleClientException(final HttpClientErrorException e, final String cityName) {
+	private static RuntimeException handleClientExceptionForCityNotFound(
+			final HttpClientErrorException e,
+			final String cityName) {
 		if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
 			return new CityNotFoundException(cityName);
 		}
 		return e;
+	}
+
+	@Override
+	public double retrieveCurrentTemperatureByCoordinates(final double latitude, final double longitude) {
+		checkCoordinatesValues(latitude, longitude);
+		final ResponseEntity<OpenWeatherMapResponse> weatherDataResponse = restTemplate.getForEntity(
+				WEATHER_URL + "?units=metric&lat={latitude}&lon={longitude}&APPID={apiKey}",
+				OpenWeatherMapResponse.class,
+				ImmutableMap.of(
+						"latitude", latitude,
+						"longitude", longitude,
+						"apiKey", apiKey));
+		return weatherDataResponse.getBody().getMain().getTemp();
+	}
+
+	private static void checkCoordinatesValues(final double latitude, final double longitude) {
+		checkArgument(latitude <= 180 && latitude >= -180 && longitude <= 180 && longitude >= -180);
 	}
 }

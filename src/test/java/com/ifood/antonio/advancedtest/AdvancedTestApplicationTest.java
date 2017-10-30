@@ -1,32 +1,35 @@
 package com.ifood.antonio.advancedtest;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestTemplate;
 
-import com.ifood.antonio.advancedtest.music.MusicStyle;
-import com.ifood.antonio.advancedtest.music.MusicSuggestionRetriever;
-import com.ifood.antonio.advancedtest.music.MusicTrack;
-import com.ifood.antonio.advancedtest.weather.WeatherRetriever;
+import com.google.common.collect.ImmutableMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class AdvancedTestApplicationTest {
 
-	@Resource(name = "open.weather.map.weather.retriever")
-	private WeatherRetriever weatherRetriver;
+	private static final String BASE_URL = "http://localhost:8080/suggestion";
 
-	@Resource(name = "spotify.music.suggestion.retriever")
-	private MusicSuggestionRetriever musicSuggestionRetriever;
+	@Resource
+	private RestTemplate restTemplate;
 
 	@Test
-	public void contextLoads() {
-		// weatherRetriver.retrieveCurrentTemperatureByCityName("a");
-		final List<MusicTrack> response = musicSuggestionRetriever.suggestTracksByMusicStyle(MusicStyle.ROCK);
+	public void shouldWorkWhenLookingByValidCityName() {
+		final ResponseEntity<String> reponse = restTemplate.getForEntity(
+				BASE_URL + "/city-name/{cityName}",
+				String.class,
+				ImmutableMap.of("cityName", "sao paulo"));
+
+		assertThat(reponse.getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 }

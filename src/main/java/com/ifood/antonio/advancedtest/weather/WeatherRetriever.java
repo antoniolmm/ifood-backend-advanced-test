@@ -15,4 +15,17 @@ public interface WeatherRetriever {
 	 * @return the current temperature in celsius
 	 */
 	double retrieveCurrentTemperatureByCityName(String cityName);
+
+	/**
+	 * Retrieve current temperature in a city by the city's geographic
+	 * coordinates.
+	 * 
+	 * @param latitude
+	 *            the city latitude
+	 * @param longtitude
+	 *            the city longitude
+	 * 
+	 * @return the current temperature in celsius
+	 */
+	double retrieveCurrentTemperatureByCoordinates(double latitude, double longitude);
 }

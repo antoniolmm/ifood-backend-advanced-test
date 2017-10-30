@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>
  * The rules for music style based on the city's temperature are the following:
  * <ul>
- * <li>For temperatures higher than or equal to 30 degrees celsius, <b>party</b>
- * tracks are suggested;
- * <li>For temperatures higher than or equal to 15 and below 30 degrees celsius,
+ * <li>For temperatures higher than 30 degrees celsius, <b>party</b> tracks are
+ * suggested;
+ * <li>For temperatures higher than 15 and below or equal to 30 degrees celsius,
  * <b>pop</b> tracks are suggested;
- * <li>For temperatures higher than or equal to 10 and below 15 degrees celsius,
+ * <li>For temperatures higher than 10 and below or equal to 15 degrees celsius,
  * <b>rock</b> tracks are suggested;
- * <li>For temperatures below 10 degrees celsius, <b>classical</b> tracks are
- * suggested.
+ * <li>For temperatures below or equal to 10 degrees celsius, <b>classical</b>
+ * tracks are suggested.
  * </ul>
  * <p>
  * A <b>400</b> status is returned when a city can not be found.

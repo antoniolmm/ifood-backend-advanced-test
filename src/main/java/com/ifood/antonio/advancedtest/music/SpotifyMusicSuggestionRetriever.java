@@ -1,6 +1,6 @@
 package com.ifood.antonio.advancedtest.music;
 
-import static org.assertj.core.util.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Base64;
 import java.util.List;

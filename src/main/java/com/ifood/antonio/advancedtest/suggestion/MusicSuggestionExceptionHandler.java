@@ -9,7 +9,7 @@ public class MusicSuggestionExceptionHandler {
 
 	@ExceptionHandler(CityNotFoundException.class)
 	public ResponseEntity<String> handleCityNotFoundException(final CityNotFoundException e) {
-		return ResponseEntity.badRequest().body("Could not found city " + e.getCityName());
+		return ResponseEntity.badRequest().body("Could not find city " + e.getCityName());
 	}
 
 	@ExceptionHandler(InvalidCoordinatesException.class)

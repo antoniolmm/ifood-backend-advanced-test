@@ -2,11 +2,6 @@ package com.ifood.antonio.advancedtest.suggestion;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import com.google.common.collect.Lists;
 import com.ifood.antonio.advancedtest.music.MusicStyle;
 
 /**
@@ -41,23 +36,7 @@ enum MusicStyleByTemperatureRange {
 		return musicStyle;
 	}
 
-	static MusicStyleByTemperatureRange getByTempererature(final double temperature) {
-		final List<MusicStyleByTemperatureRange> ranges = Lists.newArrayList(MusicStyleByTemperatureRange.values());
-		Collections.sort(ranges, MusicStyleByTemperatureRangeComparator.INSTANCE);
-		for (final MusicStyleByTemperatureRange range : ranges) {
-			if (temperature <= range.highestTemperature) {
-				return range;
-			}
-		}
-		throw new IllegalStateException("Could not find a range for " + temperature);
-	}
-
-	private static class MusicStyleByTemperatureRangeComparator implements Comparator<MusicStyleByTemperatureRange> {
-		private static final MusicStyleByTemperatureRangeComparator INSTANCE = new MusicStyleByTemperatureRangeComparator();
-
-		@Override
-		public int compare(final MusicStyleByTemperatureRange o1, final MusicStyleByTemperatureRange o2) {
-			return Double.compare(o1.highestTemperature, o2.highestTemperature);
-		}
+	public int getHighestTemperature() {
+		return highestTemperature;
 	}
 }
